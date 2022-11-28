@@ -1,32 +1,35 @@
 import cv2
 import sys
+import os
 
-# Get user supplied values
-imagePath = sys.argv[1]
+path = os.listdir(os.path.abspath(os.getcwd()))
+imagePath = os.listdir(path[0])
 cascPath = "haarcascade_frontalface_default.xml"
+one = os.path.abspath(path[0])
 
-# Create the haar cascade
-faceCascade = cv2.CascadeClassifier(cascPath)
 
-# Read the image
-image = cv2.imread(imagePath)
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+for x in imagePath:
+    pic = os.path.join(one, x)
+    print(pic)
+    faceCascade = cv2.CascadeClassifier(cascPath)
+    
 
-# Detect faces in the image
-faces = faceCascade.detectMultiScale(
-    gray,
-    scaleFactor=1.1,
-    minNeighbors=5,
-    minSize=(30, 30),
-    flags = cv2.CASCADE_SCALE_IMAGE
-)
+    image = cv2.imread(pic)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-print("Found {0} faces!".format(len(faces)))
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30),
+        flags = cv2.CASCADE_SCALE_IMAGE
+    )
 
-# Draw a rectangle around the faces
-for (x, y, w, h) in faces:
-    ROI = image[y:y+h, x:x+w]
-    blur = cv2.GaussianBlur(ROI, (51,51), 0) 
-    image[y:y+h, x:x+w] = blur
-cv2.imshow("Faces found", image)
-cv2.waitKey(0)
+    print("Found {0} faces!".format(len(faces)))
+
+    for (x, y, w, h) in faces:
+        ROI = image[y:y+h, x:x+w]
+        blur = cv2.GaussianBlur(ROI, (51,51), 0) 
+        image[y:y+h, x:x+w] = blur
+    cv2.imshow("Faces found", image)
+    cv2.waitKey(0)
