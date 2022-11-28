@@ -4,7 +4,7 @@ import os
 
 path = os.listdir(os.path.abspath(os.getcwd()))
 imagePath = os.listdir(path[0])
-cascPath = "haarcascade_frontalface_default.xml"
+cascPath = path[3]
 one = os.path.abspath(path[0])
 
 
